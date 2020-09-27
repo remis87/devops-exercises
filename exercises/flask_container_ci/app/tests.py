@@ -17,7 +17,7 @@ class TestCase(unittest.TestCase):
 
     def test_users_page(self):
         response = self.app.get('/users', follow_redirects=True)
-        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.status_code, 200)
 
 
 if __name__ == '__main__':
