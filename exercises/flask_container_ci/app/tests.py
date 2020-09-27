@@ -3,7 +3,7 @@
 
 import unittest
 
-from app.main import application
+from main import application
 
 
 class TestCase(unittest.TestCase):
