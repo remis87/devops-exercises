@@ -1,0 +1,35 @@
+pipeline {
+    agent {
+        docker { image 'python:latest' }
+    }
+  stages {  // Define the individual processes, or stages, of your CI pipeline
+    stage('Checkout') { // Checkout (git clone ...) the projects repository
+      steps {
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github-cred', url: 'https://github.com/remis87/devops-exercises']]])
+      }
+    }
+    stage('Create Virtual Env and install reqs') { 
+      steps {
+         sh ''' cd exercises/flask_container_ci
+            python -m venv env 
+            source env/bin/activate
+            pip install -r requirements.txt '''
+      }
+    }
+    stage("Run unit tests") {
+        steps {
+            sh ''' cd exercises/flask_container_ci/
+                source env/bin/activate
+                pip install -r requirements.txt
+                cd app/
+                python tests.py '''
+        }
+    }
+  }
+    post {
+        always {
+            junit 'devops-exercises/exercises/flask_container_ci/test-reports/*.xml'
+        }
+    }
+
+}
