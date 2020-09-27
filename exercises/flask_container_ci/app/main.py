@@ -5,16 +5,20 @@ from flask import Flask
 from flask import make_response
 
 import json
+import os
+
 from werkzeug.exceptions import NotFound
 
 
-app = Flask(__name__)
 
-with open("./users.json", "r") as f:
+application = Flask(__name__)
+dirname = os.path.dirname(__file__)
+with open(os.path.join(dirname, "users.json"), "r") as f:
     users = json.load(f)
+    print(users)
 
 
-@app.route("/", methods=['GET'])
+@application.route("/", methods=['GET'])
 def index():
     return pretty_json({
         "resources": {
@@ -25,12 +29,12 @@ def index():
     })
 
 
-@app.route("/users", methods=['GET'])
+@application.route("/users", methods=['GET'])
 def all_users():
     return pretty_json(users)
 
 
-@app.route("/users/<username>", methods=['GET'])
+@application.route("/users/<username>", methods=['GET'])
 def user_data(username):
     if username not in users:
         raise NotFound
@@ -38,7 +42,7 @@ def user_data(username):
     return pretty_json(users[username])
 
 
-@app.route("/users/<username>/something", methods=['GET'])
+@application.route("/users/<username>/something", methods=['GET'])
 def user_something(username):
     raise NotImplementedError()
 
@@ -55,4 +59,4 @@ def create_test_app():
 
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    application.run(port=5000)
