@@ -32,9 +32,7 @@ pipeline {
         }
     }
     stage("Run integration tests") {
-      agent {
-        any
-        }
+      agent any
         steps {
             sh ''' cd exercises/flask_container_ci/
                docker-compose -f docker-compose.yml up --exit-code-from myapp-tests
