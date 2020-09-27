@@ -28,7 +28,7 @@ pipeline {
   }
     post {
         always {
-            junit 'exercises/flask_container_ci/test-reports/*.xml'
+            junit 'exercises/flask_container_ci/app/test-reports/*.xml'
         }
     }
 
