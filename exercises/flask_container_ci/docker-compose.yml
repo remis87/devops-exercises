@@ -3,15 +3,13 @@ services:
   myapp:
     build: .
     image: myapp
-    command: gunicorn", "--bind", "0.0.0.0:5000", "wsgi:application
+    command: gunicorn --bind  0.0.0.0:5000 wsgi:application
     expose:
       - 5000
 
   myapp-tests:
     image: myapp
-    command: dockerize
-        -wait tcp://myapp:8000 -timeout 10s
-        cat "Hello World"
+    command: python main_test.py
     environment:
       APP_URL: http://myapp:5000
     depends_on:
